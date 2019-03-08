@@ -2,6 +2,7 @@ package org.rwchildress.lifegroupservices.meetings;
 
 import org.rwchildress.lifegroupservices.meetings.members.Family;
 import org.rwchildress.lifegroupservices.meetings.members.MemberService;
+import org.rwchildress.lifegroupservices.meetings.menus.MenuItem;
 import org.rwchildress.lifegroupservices.meetings.menus.MenuItemDto;
 import org.rwchildress.lifegroupservices.meetings.menus.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class MeetingsServiceImpl implements MeetingsService {
@@ -29,7 +33,6 @@ public class MeetingsServiceImpl implements MeetingsService {
     }
 
     @Override
-    @Transactional
     public Meeting findCurrentMeeting() {
         Meeting currentMeeting = meetingsRepository.findFirstByIsCompleteIsFalseOrderByMeetingDateDesc();
 
@@ -46,19 +49,42 @@ public class MeetingsServiceImpl implements MeetingsService {
 
     @Override
     @Transactional
+    public MeetingDto findCurrentMeetingDto() {
+        Meeting currentMeeting = findCurrentMeeting();
+        return convertToDto(currentMeeting);
+    }
+
+    @Override
+    @Transactional
     public Long saveMenuItemForCurrentMeeting(MenuItemDto menuItemDto) {
-        String familyName = menuItemDto.getFamilyDto().getName();
-        Family family = memberService.findAllFamilies().stream()
-                .filter(f -> f.getName().equalsIgnoreCase(familyName))
-                .findFirst()
-                .orElse(null);
+        String familyName = menuItemDto.getFamilyName();
+        Family family = memberService.findFamilyByName(familyName);
 
         if (family == null) {
             return 0L;
         }
 
         Meeting currentMeeting = findCurrentMeeting();
-
         return menuItemService.save(menuItemDto, family, currentMeeting);
     }
+
+    private MeetingDto convertToDto(Meeting meeting) {
+        MeetingDto meetingDto = new MeetingDto();
+        meetingDto.setLocationName(meeting.getLocationName());
+        meetingDto.setMeetingDate(meeting.getMeetingDate());
+        List<MenuItemDto> menuItemDtos = meeting.getMenuItems().stream()
+                .map(this::convertToMenuItemDto)
+                .collect(toList());
+        meetingDto.setMenuItemDtos(menuItemDtos);
+        meetingDto.setComplete(meeting.isComplete());
+        return meetingDto;
+    }
+
+    private MenuItemDto convertToMenuItemDto(MenuItem menuItem) {
+        MenuItemDto menuItemDto = new MenuItemDto();
+        menuItemDto.setName(menuItem.getName());
+        menuItemDto.setFamilyName(menuItem.getFamily().getName());
+        return menuItemDto;
+    }
+
 }

@@ -1,10 +1,8 @@
 package org.rwchildress.lifegroupservices.meetings.menus;
 
-import org.rwchildress.lifegroupservices.meetings.members.FamilyDto;
-
 public class MenuItemDto {
     private String name;
-    private FamilyDto familyDto;
+    private String familyName;
 
     public String getName() {
         return name;
@@ -14,11 +12,11 @@ public class MenuItemDto {
         this.name = name;
     }
 
-    public FamilyDto getFamilyDto() {
-        return familyDto;
+    public String getFamilyName() {
+        return familyName;
     }
 
-    public void setFamilyDto(FamilyDto familyDto) {
-        this.familyDto = familyDto;
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
     }
 }

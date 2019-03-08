@@ -1,10 +1,11 @@
 package org.rwchildress.lifegroupservices.meetings;
 
-import org.rwchildress.lifegroupservices.meetings.members.Family;
 import org.rwchildress.lifegroupservices.meetings.members.FamilyDto;
 import org.rwchildress.lifegroupservices.meetings.members.MemberService;
 import org.rwchildress.lifegroupservices.meetings.menus.MenuItemDto;
 import org.rwchildress.lifegroupservices.meetings.menus.MenuItemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ import java.util.List;
 @RequestMapping(path = "/lifegroup")
 public class MeetingsController {
 
+    private static final Logger log = LoggerFactory.getLogger(MeetingsController.class);
+
     private MemberService memberService;
     private MeetingsService meetingsService;
     private MenuItemService menuItemService;
@@ -34,27 +37,32 @@ public class MeetingsController {
     }
 
     @GetMapping(path = "/families")
-    public List<Family> getAllFamilies() {
+    public List<FamilyDto> getAllFamilies() {
+        log.info("In MeetingsController #getAllFamilies");
         return memberService.findAllFamilies();
     }
 
     @PutMapping(path = "/family")
     public Long saveFamily(@RequestBody FamilyDto familyDto) {
+        log.info("In MeetingsController #saveFamily");
         return memberService.save(familyDto);
     }
 
     @GetMapping(path = "/meeting")
-    public Meeting getCurrentMeeting() {
-        return meetingsService.findCurrentMeeting();
+    public MeetingDto getCurrentMeeting() {
+        log.info("In MeetingsController #getCurrentMeeting");
+        return meetingsService.findCurrentMeetingDto();
     }
 
     @PutMapping(path = "/menuitem")
     public Long saveMenuItem(@RequestBody MenuItemDto menuItemDto) {
+        log.info("In MeetingsController #saveMenuItem");
         return meetingsService.saveMenuItemForCurrentMeeting(menuItemDto);
     }
 
     @DeleteMapping(path = "/menuitem/{menuItemId}")
     public void deleteMenuItem(@PathVariable Long menuItemId) {
+        log.info("In MeetingsController #deleteMenuItem");
         menuItemService.delete(menuItemId);
     }
 
