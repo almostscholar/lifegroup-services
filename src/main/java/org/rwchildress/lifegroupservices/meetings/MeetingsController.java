@@ -38,31 +38,31 @@ public class MeetingsController {
 
     @GetMapping(path = "/families")
     public List<FamilyDto> getAllFamilies() {
-        log.info("In MeetingsController #getAllFamilies");
+        log.debug("In MeetingsController #getAllFamilies");
         return memberService.findAllFamilies();
     }
 
     @PutMapping(path = "/family")
     public Long saveFamily(@RequestBody FamilyDto familyDto) {
-        log.info("In MeetingsController #saveFamily");
+        log.debug("In MeetingsController #saveFamily");
         return memberService.save(familyDto);
     }
 
     @GetMapping(path = "/meeting")
     public MeetingDto getCurrentMeeting() {
-        log.info("In MeetingsController #getCurrentMeeting");
+        log.debug("In MeetingsController #getCurrentMeeting");
         return meetingsService.findCurrentMeetingDto();
     }
 
     @PutMapping(path = "/menuitem")
     public Long saveMenuItem(@RequestBody MenuItemDto menuItemDto) {
-        log.info("In MeetingsController #saveMenuItem");
+        log.debug("In MeetingsController #saveMenuItem");
         return meetingsService.saveMenuItemForCurrentMeeting(menuItemDto);
     }
 
     @DeleteMapping(path = "/menuitem/{menuItemId}")
     public void deleteMenuItem(@PathVariable Long menuItemId) {
-        log.info("In MeetingsController #deleteMenuItem");
+        log.debug("In MeetingsController #deleteMenuItem");
         menuItemService.delete(menuItemId);
     }
 

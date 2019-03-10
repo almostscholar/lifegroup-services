@@ -27,11 +27,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public List<FamilyDto> findAllFamilies() {
-        log.info("in MemberServiceImpl #findAllFamilies");
+        log.debug("in MemberServiceImpl #findAllFamilies");
         List<Family> families = new ArrayList<>();
-        log.info("before calling memberRepository");
         memberRepository.findAll().forEach(families::add);
-        log.info("after calling memberRepository");
+        log.debug("returning from memberRepository");
         return families.stream()
                 .map(this::convertToDto)
                 .collect(toList());
@@ -44,11 +43,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Long save(FamilyDto familyDto) {
-        log.info("in MemberServiceImpl #findAllFamilies");
+        log.debug("in MemberServiceImpl #findAllFamilies");
         Family family = new Family();
-        log.info("before calling memberRepository");
         family.setName(familyDto.getName());
-        log.info("after calling memberRepository");
+        log.debug("returning from memberRepository");
         return memberRepository.save(family).getId();
     }
 

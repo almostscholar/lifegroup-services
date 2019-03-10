@@ -5,6 +5,8 @@ import org.rwchildress.lifegroupservices.meetings.members.MemberService;
 import org.rwchildress.lifegroupservices.meetings.menus.MenuItem;
 import org.rwchildress.lifegroupservices.meetings.menus.MenuItemDto;
 import org.rwchildress.lifegroupservices.meetings.menus.MenuItemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +16,13 @@ import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 @Service
 public class MeetingsServiceImpl implements MeetingsService {
+
+    private static final Logger log = LoggerFactory.getLogger(MeetingsServiceImpl.class);
 
     private MenuItemService menuItemService;
     private MeetingsRepository meetingsRepository;
@@ -40,6 +45,7 @@ public class MeetingsServiceImpl implements MeetingsService {
             return currentMeeting;
         }
 
+        log.info("No incomplete meeting found. Creating new meeting!");
         currentMeeting = new Meeting();
         currentMeeting.setLocationName("The Sander's Residence");
         currentMeeting.setMeetingDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY)));
@@ -61,7 +67,10 @@ public class MeetingsServiceImpl implements MeetingsService {
         Family family = memberService.findFamilyByName(familyName);
 
         if (family == null) {
-            return 0L;
+            if (log.isWarnEnabled()) {
+                log.warn(format("Attempted to save menu item for non-existent family name of %s", familyName));
+            }
+            return -1L;
         }
 
         Meeting currentMeeting = findCurrentMeeting();
@@ -82,6 +91,7 @@ public class MeetingsServiceImpl implements MeetingsService {
 
     private MenuItemDto convertToMenuItemDto(MenuItem menuItem) {
         MenuItemDto menuItemDto = new MenuItemDto();
+        menuItemDto.setId(menuItem.getId());
         menuItemDto.setName(menuItem.getName());
         menuItemDto.setFamilyName(menuItem.getFamily().getName());
         return menuItemDto;
