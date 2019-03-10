@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.rwchildress</groupId>
 	<artifactId>lifegroup-services</artifactId>
-	<version>0.0.12-SNAPSHOT</version>
+	<version>0.0.13-SNAPSHOT</version>
 	<name>lifegroup-services</name>
 	<description>Services for Life Group Management</description>
 	<packaging>war</packaging>
@@ -94,6 +94,16 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.2.2</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>src/main/resources/.ebextensions</directory>
+							<targetPath>.ebextensions</targetPath>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
