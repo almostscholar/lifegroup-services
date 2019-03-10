@@ -84,7 +84,7 @@ public class MeetingsServiceImpl implements MeetingsService {
         List<MenuItemDto> menuItemDtos = meeting.getMenuItems().stream()
                 .map(this::convertToMenuItemDto)
                 .collect(toList());
-        meetingDto.setMenuItemDtos(menuItemDtos);
+        meetingDto.setMenuItems(menuItemDtos);
         meetingDto.setComplete(meeting.isComplete());
         return meetingDto;
     }

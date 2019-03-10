@@ -9,7 +9,7 @@ public class MeetingDto {
 
     private String locationName;
     private LocalDateTime meetingDate;
-    private List<MenuItemDto> menuItemDtos;
+    private List<MenuItemDto> menuItems;
     private Boolean isComplete;
 
     public String getLocationName() {
@@ -28,12 +28,12 @@ public class MeetingDto {
         this.meetingDate = meetingDate;
     }
 
-    public List<MenuItemDto> getMenuItemDtos() {
-        return menuItemDtos;
+    public List<MenuItemDto> getMenuItems() {
+        return menuItems;
     }
 
-    public void setMenuItemDtos(List<MenuItemDto> menuItemDtos) {
-        this.menuItemDtos = menuItemDtos;
+    public void setMenuItems(List<MenuItemDto> menuItems) {
+        this.menuItems = menuItems;
     }
 
     public Boolean isComplete() {
