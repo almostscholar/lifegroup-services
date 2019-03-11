@@ -10,6 +10,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/healthCheck").permitAll()
                 .antMatchers("/lifegroup/**").permitAll()
                 .antMatchers("/h2_console/**").permitAll();
 
