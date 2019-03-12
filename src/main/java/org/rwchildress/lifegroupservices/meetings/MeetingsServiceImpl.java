@@ -39,7 +39,7 @@ public class MeetingsServiceImpl implements MeetingsService {
 
     @Override
     public Meeting findCurrentMeeting() {
-        Meeting currentMeeting = meetingsRepository.findFirstByCreatedDateMax();
+        Meeting currentMeeting = meetingsRepository.findFirstByOrderByCreatedDateDesc();
 
         if (currentMeeting != null && !currentMeeting.isComplete()) {
             return currentMeeting;
