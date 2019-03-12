@@ -39,13 +39,13 @@ public class MeetingsServiceImpl implements MeetingsService {
 
     @Override
     public Meeting findCurrentMeeting() {
-        Meeting currentMeeting = meetingsRepository.findFirstByIsCompleteIsFalseOrderByMeetingDateDesc();
+        Meeting currentMeeting = meetingsRepository.findFirstByCreatedDateMax();
 
-        if (currentMeeting != null) {
+        if (currentMeeting != null && !currentMeeting.isComplete()) {
             return currentMeeting;
         }
 
-        log.info("No incomplete meeting found. Creating new meeting!");
+        log.info("No current meeting found. Creating new meeting!");
         currentMeeting = new Meeting();
         currentMeeting.setLocationName("The Sander's Residence");
         currentMeeting.setMeetingDate(LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY)));
