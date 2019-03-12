@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.rwchildress</groupId>
 	<artifactId>lifegroup-services</artifactId>
-	<version>0.0.15-SNAPSHOT</version>
+	<version>0.0.16-SNAPSHOT</version>
 	<name>lifegroup-services</name>
 	<description>Services for Life Group Management</description>
 	<packaging>war</packaging>

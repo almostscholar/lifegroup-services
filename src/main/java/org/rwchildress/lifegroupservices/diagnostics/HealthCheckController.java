@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins = { "http://localhost:4200", "https://rwchildress.org" })
 public class HealthCheckController {
 
     @GetMapping(value = "/healthCheck", headers = "Accept=application/json")

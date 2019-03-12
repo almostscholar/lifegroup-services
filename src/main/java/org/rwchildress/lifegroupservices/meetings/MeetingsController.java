@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/lifegroup")
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins = { "http://localhost:4200", "https://rwchildress.org" })
 public class MeetingsController {
 
     private static final Logger log = LoggerFactory.getLogger(MeetingsController.class);
