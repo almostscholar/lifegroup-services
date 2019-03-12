@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -39,9 +40,9 @@ public class MeetingsServiceImpl implements MeetingsService {
 
     @Override
     public Meeting findCurrentMeeting() {
-        Meeting currentMeeting = meetingsRepository.findFirstByOrderByCreatedDateDesc();
+        Meeting currentMeeting = meetingsRepository.findFirstByIsCompleteIsFalseOrderByMeetingDateDesc();
 
-        if (currentMeeting != null && !currentMeeting.isComplete()) {
+        if (currentMeeting != null) {
             return currentMeeting;
         }
 
@@ -81,10 +82,14 @@ public class MeetingsServiceImpl implements MeetingsService {
         MeetingDto meetingDto = new MeetingDto();
         meetingDto.setLocationName(meeting.getLocationName());
         meetingDto.setMeetingDate(meeting.getMeetingDate());
-        List<MenuItemDto> menuItemDtos = meeting.getMenuItems().stream()
-                .map(this::convertToMenuItemDto)
-                .collect(toList());
-        meetingDto.setMenuItems(menuItemDtos);
+        if (meeting.getMenuItems() == null) {
+            meetingDto.setMenuItems(new ArrayList<>());
+        } else {
+            List<MenuItemDto> menuItemDtos = meeting.getMenuItems().stream()
+                    .map(this::convertToMenuItemDto)
+                    .collect(toList());
+            meetingDto.setMenuItems(menuItemDtos);
+        }
         meetingDto.setComplete(meeting.isComplete());
         return meetingDto;
     }
