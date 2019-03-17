@@ -18,6 +18,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Override
     public Long save(MenuItemDto menuItemDto, Family family, Meeting currentMeeting) {
         MenuItem menuItem = new MenuItem();
+        menuItem.setId(menuItemDto.getId());
         menuItem.setName(menuItemDto.getName());
         menuItem.setFamily(family);
         menuItem.setMeeting(currentMeeting);
