@@ -65,6 +65,9 @@ public class MeetingsServiceImpl implements MeetingsService {
     @Transactional
     public Long saveMenuItemForCurrentMeeting(MenuItemDto menuItemDto) {
         String familyName = menuItemDto.getFamilyName();
+        if (familyName == null || familyName.isEmpty()) {
+            familyName = "None";
+        }
         Family family = memberService.findFamilyByName(familyName);
 
         if (family == null) {
