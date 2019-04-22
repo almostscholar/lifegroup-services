@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,6 +55,12 @@ public class MeetingsController {
     public MeetingDto getCurrentMeeting() {
         log.debug("In MeetingsController #getCurrentMeeting");
         return meetingsService.findCurrentMeetingDto();
+    }
+
+    @PatchMapping(path = "/meeting/{id}/complete")
+    public void completeMeeting(@PathVariable Long id) {
+        log.debug("In MeetingsController #completeMeeting");
+        meetingsService.completeMeeting(id);
     }
 
     @PutMapping(path = "/menuitem")
