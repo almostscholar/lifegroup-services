@@ -7,10 +7,19 @@ import java.util.List;
 
 public class MeetingDto {
 
+    private Long id;
     private String locationName;
     private LocalDateTime meetingDate;
     private List<MenuItemDto> menuItems;
     private Boolean isComplete;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getLocationName() {
         return locationName;

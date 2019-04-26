@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.Optional;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
@@ -81,8 +83,22 @@ public class MeetingsServiceImpl implements MeetingsService {
         return menuItemService.save(menuItemDto, family, currentMeeting);
     }
 
+    @Override
+    public void completeMeeting(Long id) {
+        Optional<Meeting> meeting = meetingsRepository.findById(id);
+
+        if (meeting.isPresent()) {
+            Meeting m = meeting.get();
+            m.setComplete(true);
+            meetingsRepository.save(m);
+        } else {
+            throw new MissingResourceException("no meeting found for id " + id, "Meeting", "meeting.id");
+        }
+    }
+
     private MeetingDto convertToDto(Meeting meeting) {
         MeetingDto meetingDto = new MeetingDto();
+        meetingDto.setId(meeting.getId());
         meetingDto.setLocationName(meeting.getLocationName());
         meetingDto.setMeetingDate(meeting.getMeetingDate());
         if (meeting.getMenuItems() == null) {
